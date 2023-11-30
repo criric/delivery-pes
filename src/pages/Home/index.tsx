@@ -70,17 +70,19 @@ export function Home() {
     return (
         <div>
             <h1 className="font-bold text-2xl">Cardápio</h1>
-            <div className='flex flex-wrap gap-8'>
+            <div className='flex flex-wrap gap-8 mt-2'>
                 {products.map(product => {
                     return (
-                        <div key={product.id} className="bg-base-card p-5 flex flex-col items-center justify-between w-64 h-80 rounded-tr-[36px] rounded-bl-[36px]">
+                        <div key={product.id} className="bg-base-card p-5 flex flex-col items-center justify-between w-64 gap-2 rounded-tr-[36px] rounded-bl-[36px]">
                             <img src={product.image} alt=""/>
                             <h2 className='font-bold text-xl'>{product.name}</h2>
                             <p className='text-sm text-base-label text-center'>{product.description}</p>
-                            <p className='font-bold text-2xl text-base-text'><span className='font-normal text-sm'>R$</span>{product.price.toFixed(2)}</p>
-                            <button className='bg-purple-dark text-white w-full py-2 rounded'>
-                                <Bag size={22} weight='fill' className='mx-auto'/>
-                            </button>
+                            <div className='w-full flex justify-between mt-3'>
+                                <p className='font-bold text-2xl text-base-text'><span className='font-normal text-sm'>R$</span>{product.price.toFixed(2)}</p>
+                                <button className='bg-purple-dark text-white p-2 rounded hover:bg-purple'>
+                                    <Bag size={22} weight='fill' className='mx-auto'/>
+                                </button>
+                            </div>
                         </div>
                     )
                 })}
