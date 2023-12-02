@@ -12,6 +12,13 @@ const productsOnBag = [
 
 ]
 export function Bag(){
+    const totalPriceItems = productsOnBag.reduce((acc, value) => {
+        acc += value.price
+        return acc
+    }, 0)
+
+    const totalPrice = totalPriceItems + 3.5
+    
     return (
         <div>
             <h1 className="font-bold text-2xl">Complete seu pedido</h1>
@@ -89,15 +96,15 @@ export function Bag(){
                         <div>
                             <div className='flex justify-between mb-3'>
                                 <h3 className='text-sm'>Total de itens</h3>
-                                <h3>R$ 29,70</h3>
+                                <h3>R$ {totalPriceItems.toFixed(2)}</h3>
                             </div>
                             <div className='flex justify-between mb-3'>
                                 <h3 className='text-sm'>Entrega</h3>
-                                <h3>R$ 29,70</h3>
+                                <h3>R$ 3.50</h3>
                             </div>
                             <div className='flex justify-between font-bold text-xl mb-6'>
                                 <h3>Total</h3>
-                                <h3>R$ 29,70</h3>
+                                <h3>R$ {totalPrice.toFixed(2)}</h3>
                             </div>
                         </div>
                         <button className='bg-yellow hover:bg-yellow-dark text-white w-full py-3 rounded'>
