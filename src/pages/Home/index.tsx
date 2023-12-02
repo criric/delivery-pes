@@ -1,4 +1,4 @@
-import { Bag, ShoppingCartSimple } from '@phosphor-icons/react';
+import { Bag } from '@phosphor-icons/react';
 import coffee from '../../assets/coffee.png';
 
 const products = [
