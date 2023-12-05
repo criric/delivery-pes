@@ -1,6 +1,6 @@
 import { Bag, PencilSimple } from '@phosphor-icons/react';
 import coffee from '../../assets/coffee.png';
-import { useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 const products = [
     {
@@ -87,9 +87,9 @@ export function Home() {
                                         <Bag size={22} weight='fill' className='mx-auto'/>
                                     </button>
                                     {isEmployee && 
-                                        <button className='bg-purple-dark text-white p-2 rounded hover:bg-purple'>
+                                        <NavLink to="/employee/add" className='bg-purple-dark text-white p-2 rounded hover:bg-purple'>
                                             <PencilSimple size={22} weight='fill' className='mx-auto'/>
-                                        </button>
+                                        </NavLink>
                                     }
                                 </div>
                             </div>
