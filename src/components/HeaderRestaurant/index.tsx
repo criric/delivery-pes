@@ -15,7 +15,7 @@ export function HeaderRestaurant(){
                 <NavLink to="/client/bag" className="bg-yellow-light text-yellow-dark p-2 rounded hover:bg-yellow hover:text-white">
                     <Bag size={22} weight='fill'/>
                 </NavLink>
-                <NavLink to="/client/bag" className="bg-yellow-light text-yellow-dark p-2 rounded hover:bg-yellow hover:text-white">
+                <NavLink to="/employee/add" className="bg-yellow-light text-yellow-dark p-2 rounded hover:bg-yellow hover:text-white">
                     <Plus size={22} />
                 </NavLink>
                 <NavLink to="/" className="bg-yellow-light text-yellow-dark p-2 rounded hover:bg-yellow hover:text-white">
