@@ -1,4 +1,4 @@
-import { List, Bag } from '@phosphor-icons/react';
+import { List, Bag, Swap } from '@phosphor-icons/react';
 import logo from '../../assets/logo.png';
 import { NavLink } from 'react-router-dom';
 export function Header() {
@@ -13,6 +13,9 @@ export function Header() {
                 </NavLink>
                 <NavLink to="/client/bag" className="bg-yellow-light text-yellow-dark p-2 rounded hover:bg-yellow hover:text-white">
                     <Bag size={22} weight='fill'/>
+                </NavLink>
+                <NavLink to="/" className="bg-yellow-light text-yellow-dark p-2 rounded hover:bg-yellow hover:text-white">
+                    <Swap size={22} />
                 </NavLink>
             </div>
         </nav>

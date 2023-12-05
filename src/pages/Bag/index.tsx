@@ -1,5 +1,6 @@
 import { Bank, CreditCard, CurrencyDollar, MapPinLine, Money, Trash } from '@phosphor-icons/react'
 import coffee from '../../assets/coffee.png';
+import { NavLink } from 'react-router-dom';
 
 const productsOnBag = [
     {
@@ -107,9 +108,9 @@ export function Bag(){
                                 <h3>R$ {totalPrice.toFixed(2)}</h3>
                             </div>
                         </div>
-                        <button className='bg-yellow hover:bg-yellow-dark text-white w-full py-3 rounded'>
+                        <NavLink className='bg-yellow hover:bg-yellow-dark text-white text-center block w-full py-3 rounded' to="/client/status">
                             CONFIRMAR PEDIDO
-                        </button>
+                        </NavLink>
                     </div>
                 </div>
             </div>

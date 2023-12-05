@@ -4,6 +4,7 @@ import { Bag } from "./pages/Bag";
 import { DefaultLayout } from "./layouts/DefaultLayout";
 import { Profile } from "./pages/Profile";
 import { MenuEmployee } from "./pages/MenuEmployee";
+import { StatusPedido } from "./pages/StatusPedido";
 
 export function Router(){
     return (
@@ -15,6 +16,7 @@ export function Router(){
             <Route path="client" element={<DefaultLayout />}>
                 <Route path="menu" element={<Home />} />
                 <Route path="bag" element={<Bag />} />
+                <Route path="status" element={<StatusPedido />} />
             </Route>
         </Routes>
     )
