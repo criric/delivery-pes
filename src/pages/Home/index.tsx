@@ -1,4 +1,4 @@
-import { Bag } from '@phosphor-icons/react';
+import { Bag, PencilSimple } from '@phosphor-icons/react';
 import coffee from '../../assets/coffee.png';
 
 const products = [
@@ -79,9 +79,14 @@ export function Home() {
                             <p className='text-sm text-base-label text-center'>{product.description}</p>
                             <div className='w-full flex justify-between mt-3'>
                                 <p className='font-bold text-2xl text-base-text'><span className='font-normal text-sm'>R$</span>{product.price.toFixed(2)}</p>
-                                <button className='bg-purple-dark text-white p-2 rounded hover:bg-purple'>
-                                    <Bag size={22} weight='fill' className='mx-auto'/>
-                                </button>
+                                <div className='flex gap-2'>
+                                    <button className='bg-purple-dark text-white p-2 rounded hover:bg-purple'>
+                                        <Bag size={22} weight='fill' className='mx-auto'/>
+                                    </button>
+                                    <button className='bg-purple-dark text-white p-2 rounded hover:bg-purple'>
+                                        <PencilSimple size={22} weight='fill' className='mx-auto'/>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     )
