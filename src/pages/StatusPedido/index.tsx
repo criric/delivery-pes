@@ -34,7 +34,7 @@ export function StatusPedido(){
                         </div>
                         <div className='leading-tight'>
                             <h1>Pagamento na entrega</h1>
-                            <h2>Cartão de crédito</h2>
+                            <h2><b>Cartão de crédito</b></h2>
                         </div>
                     </div>
                 </div>

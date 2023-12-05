@@ -3,7 +3,6 @@ import { Home } from "./pages/Home";
 import { Bag } from "./pages/Bag";
 import { DefaultLayout } from "./layouts/DefaultLayout";
 import { Profile } from "./pages/Profile";
-import { MenuEmployee } from "./pages/MenuEmployee";
 import { StatusPedido } from "./pages/StatusPedido";
 import { RestaurantLayout } from "./layouts/RestaurantLayout";
 

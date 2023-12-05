@@ -1,5 +1,6 @@
 import { Bag, PencilSimple } from '@phosphor-icons/react';
 import coffee from '../../assets/coffee.png';
+import { useLocation } from 'react-router-dom';
 
 const products = [
     {
@@ -67,6 +68,8 @@ const products = [
     },
 ]
 export function Home() {
+    const location = useLocation()
+    const isEmployee = location.pathname === '/employee/menu'
     return (
         <div>
             <h1 className="font-bold text-2xl">Cardápio</h1>
@@ -83,9 +86,11 @@ export function Home() {
                                     <button className='bg-purple-dark text-white p-2 rounded hover:bg-purple'>
                                         <Bag size={22} weight='fill' className='mx-auto'/>
                                     </button>
-                                    <button className='bg-purple-dark text-white p-2 rounded hover:bg-purple'>
-                                        <PencilSimple size={22} weight='fill' className='mx-auto'/>
-                                    </button>
+                                    {isEmployee && 
+                                        <button className='bg-purple-dark text-white p-2 rounded hover:bg-purple'>
+                                            <PencilSimple size={22} weight='fill' className='mx-auto'/>
+                                        </button>
+                                    }
                                 </div>
                             </div>
                         </div>
