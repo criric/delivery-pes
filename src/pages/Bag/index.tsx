@@ -159,7 +159,7 @@ export function Bag(){
                                 onChange={(e) => setComplemento(e.target.value)}
                                 />
                             </div>
-                            <button type="submit">Enviar Endereço</button>
+                            <button type="submit" className='bg-yellow hover:bg-yellow-dark text-white text-center block w-full py-3 rounded'>Salvar Endereço</button>
                         </form>
                     </div>
                     <div className='bg-base-card p-10 rounded'>

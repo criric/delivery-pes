@@ -16,7 +16,7 @@ export function StatusPedido(){
         <div className='mt-10'>
             <div>
                 <h1 className='text-[32px] text-yellow-dark font-bold'>Uhu! Pedido confirmado</h1>
-                <p className='text-xl'>Agora é só aguardar que logo o café chegará até você</p>
+                <p className='text-xl'>Agora é só aguardar que logo o seu pedido chegará até você</p>
             </div>
             <div className='flex items-center justify-between'>
                 <div className='flex flex-col gap-8 border border-purple-dark rounded-tr-[36px] rounded-bl-[36px] p-10 text-base w-full'>
@@ -25,8 +25,7 @@ export function StatusPedido(){
                             <MapPin size={16}  weight='fill'/>
                         </div>
                         <div className='leading-tight'>
-                            <h1>Entrega em <b>{address.street}, {address.number}</b></h1>
-                            <h2>{address.complement} - Xique-Xique, BA</h2>
+                            <h1>Entrega em <b>{address.street}, {address.number}, {address.complement}</b></h1>
                         </div>
                     </div>
                     <div className='flex items-center gap-2'>
