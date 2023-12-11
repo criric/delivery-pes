@@ -188,7 +188,7 @@ export function Home() {
                         <div key={product.id} className="bg-base-card p-5 flex flex-col justify-between w-64 gap-2 rounded-tr-[36px] rounded-bl-[36px]">
                             <div className='flex justify-between items-center w-full'>
                                 <h2 className='font-bold text-xl'>{product.name}</h2>
-                                <div className='bg-yellow-light rounded-full text-xs text-yellow-dark py-1 px-2 font-bold'>
+                                <div className='bg-yellow-light rounded-full text-xs text-yellow-dark py-1 px-2 font-bold text-center'>
                                     {product.category.toUpperCase()}
                                 </div>
                             </div>
