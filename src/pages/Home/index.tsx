@@ -7,8 +7,10 @@ import Modal from './components/Modal';
 export function Home() {
     const [products, setProducts] = useState([])
     const [open, setOpen] = useState(false)
+    const [cartItems, setCartItems] = useState([]);
     const location = useLocation()
     const isEmployee = location.pathname === '/employee/menu'
+    const [itemMenuId, setItemMenuId] = useState('');
 
     const date = new Date();
 
@@ -51,6 +53,64 @@ export function Home() {
         ...item,
         manager_id: e.target.value,
       });
+    };
+
+    useEffect(() => {
+      // Função para obter os itens do carrinho
+      const fetchCartItems = async () => {
+      try {
+          const response = await fetch('http://localhost:5000/api/cart');
+          if (response.ok) {
+          const data = await response.json();
+          setCartItems(data);
+          } else {
+          console.error('Erro ao obter itens do carrinho:', response.statusText);
+          }
+      } catch (error) {
+          console.error('Erro ao obter itens do carrinho:', error);
+      }
+      };
+
+      // Chamar a função para obter os itens do carrinho
+      fetchCartItems();
+  }, []);
+
+    const handleAddToCart = async (id) => {
+      console.log('Chamando handleAddToCart com id:', id);
+    
+      // Verificar se o item já está no carrinho
+      const isItemInCart = cartItems.some(item => item.id === id);
+    
+      if (isItemInCart) {
+        console.log('Item já está no carrinho.');
+        return;
+      }
+    
+      try {
+        const response = await fetch('http://localhost:5000/api/cart', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            item_menu_id: id,
+            // Você pode incluir mais dados, como user_id ou session_id, conforme necessário
+          }),
+        });
+    
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          // Atualizar o estado do carrinho após adição bem-sucedida, se necessário
+        } else {
+          console.error('Erro ao adicionar item ao carrinho:', response.statusText);
+          // Aqui você pode lidar com erros de solicitação
+        }
+    
+      } catch (error) {
+        console.error('Erro ao adicionar item ao carrinho:', error);
+        // Aqui você pode lidar com erros de solicitação
+      }
     };
       
     const handleSubmit = async (e) => {      
@@ -126,11 +186,6 @@ export function Home() {
                 {products.map(product => {
                     return (
                         <div key={product.id} className="bg-base-card p-5 flex flex-col justify-between w-64 gap-2 rounded-tr-[36px] rounded-bl-[36px]">
-                            {isEmployee && 
-                                <button className='text-base-subtitle rounded ms-auto' onClick={() => handleDelete(product.id)}>
-                                    <Trash size={22} weight='fill' className='mx-auto'/>
-                                </button>
-                            }
                             <div className='flex justify-between items-center w-full'>
                                 <h2 className='font-bold text-xl'>{product.name}</h2>
                                 <div className='bg-yellow-light rounded-full text-xs text-yellow-dark py-1 px-2 font-bold'>
@@ -141,16 +196,20 @@ export function Home() {
                             <div className='w-full flex justify-between mt-3'>
                                 <p className='font-bold text-2xl text-base-text'><span className='font-normal text-sm'>R$</span>{product.price.toFixed(2)}</p>
                                 <div className='flex gap-2'>
-                                    <button className='bg-purple-dark text-white p-2 rounded hover:bg-purple'>
-                                        <Bag size={22} weight='fill' className='mx-auto'/>
+                                  {isEmployee ? 
+                                    <>
+                                      <button className='bg-purple-dark text-white p-2 rounded hover:bg-purple' onClick={() => OpenModalToEdit(product.id)}>
+                                        <PencilSimple size={22} weight='fill' className='mx-auto'/>
+                                      </button>
+                                      <button className='bg-red-700 text-white p-2 rounded hover:bg-900' onClick={() => handleDelete(product.id)}>
+                                        <Trash size={22} weight='fill' className='mx-auto'/>
+                                      </button>
+                                    </>
+                                    :
+                                    <button className='bg-purple-dark text-white p-2 rounded hover:bg-purple' onClick={() => handleAddToCart(product.id)}>
+                                      <Bag size={22} weight='fill' className='mx-auto'/>
                                     </button>
-                                    {isEmployee && 
-                                        <>
-                                            <button className='bg-purple-dark text-white p-2 rounded hover:bg-purple' onClick={() => OpenModalToEdit(product.id)}>
-                                                <PencilSimple size={22} weight='fill' className='mx-auto'/>
-                                            </button>
-                                        </>
-                                    }
+                                  }
                                 </div>
                             </div>
                         </div>

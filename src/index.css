@@ -18,7 +18,13 @@
     gap: 12px;
     font-size: 10px;
     background-color: #ededed;
+    border: 1px solid #ededed;
     padding: 16px;
     border-radius: 4px;
+  }
+
+  .button-custom.selected{
+    border: 1px solid #8047F8;
+    background-color: #EBE5F9;
   }
 }

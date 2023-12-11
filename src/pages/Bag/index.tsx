@@ -1,24 +1,117 @@
-import { Bank, CreditCard, CurrencyDollar, MapPinLine, Money, Trash } from '@phosphor-icons/react'
-import coffee from '../../assets/coffee.png';
+import { Bank, CreditCard, CurrencyDollar, MapPinLine, Money, Trash, X } from '@phosphor-icons/react'
 import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import pixLogo from '../../assets/pix.svg'
+import Modal from '../Home/components/Modal';
 
-const productsOnBag = [
-    {
-        id: 1,
-        name: 'Café',
-        description: 'Descrição do produto 1',
-        price: 10.00,
-        image: coffee,
-    },
-
-]
 export function Bag(){
-    const totalPriceItems = productsOnBag.reduce((acc, value) => {
-        acc += value.price
-        return acc
-    }, 0)
+    const [cartItems, setCartItems] = useState([]);
+    const [quantities, setQuantities] = useState({});
+    const [selectedButton, setSelectedButton] = useState(null);
+    const [open, setOpen] = useState(false)
+
+    const [cep, setCep] = useState('');
+    const [street, setRua] = useState('');
+    const [number, setNumero] = useState('');
+    const [complement, setComplemento] = useState('');
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      try {
+        const response = await fetch('http://localhost:5000/api/address', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            client_id: '12345678910',
+            cep,
+            street,
+            number,
+            complement,
+          }),
+        });
+  
+        if (response.ok) {
+          // Trate a resposta de sucesso aqui
+          console.log('Endereço enviado com sucesso!');
+        } else {
+          // Trate erros aqui
+          console.error('Erro ao enviar o endereço');
+        }
+      } catch (error) {
+        console.error('Erro durante a requisição:', error);
+      }
+    };
+
+    const handleButtonClick = (buttonName) => {
+      if (selectedButton === buttonName) {
+        // Se o botão clicado já está selecionado, deseleciona
+        setSelectedButton(null);
+      } else {
+        // Se o botão clicado não está selecionado, seleciona
+        if(buttonName === 'dinheiro'){
+            setOpen(true)
+        }
+        setSelectedButton(buttonName);
+      }
+    };
+    
+    const totalPriceItems = cartItems.reduce((acc, value) => {
+        const quantity = quantities[value.id] || 1;
+        acc += value.price * quantity;
+        return acc;
+      }, 0);
+    
+
+    const handleItemAmount = (productId, newAmount) => {
+        setQuantities((prevQuantities) => ({
+          ...prevQuantities,
+          [productId]: newAmount,
+        }));
+    };
 
     const totalPrice = totalPriceItems + 3.5
+    useEffect(() => {
+        // Função para obter os itens do carrinho
+        const fetchCartItems = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/cart');
+            if (response.ok) {
+            const data = await response.json();
+            setCartItems(data);
+            } else {
+            console.error('Erro ao obter itens do carrinho:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Erro ao obter itens do carrinho:', error);
+        }
+        };
+
+        // Chamar a função para obter os itens do carrinho
+        fetchCartItems();
+    }, []);
+
+    const deleteCartItem = async (cartItemId) => {
+        try {
+          const response = await fetch(`http://localhost:5000/api/cart/${cartItemId}`, {
+            method: 'DELETE',
+          });
+      
+          if (response.ok) {
+            // Atualizar o estado do carrinho após a exclusão
+            const updatedCartItems = cartItems.filter(item => item.id !== cartItemId);
+            setCartItems(updatedCartItems);
+      
+            console.log(`Item do carrinho ${cartItemId} excluído com sucesso.`);
+          } else {
+            console.error('Erro ao excluir item do carrinho:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Erro ao excluir item do carrinho:', error);
+        }
+      };
     
     return (
         <div>
@@ -33,20 +126,40 @@ export function Bag(){
                                 <h2 className='text-[14px]'>Informe o endereço onde deseja receber seu pedido</h2>
                             </div>
                         </div>
-                        <form action="" className="flex flex-col gap-4">
+                        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                             <div className="grid grid-cols-12 gap-3">
-                                <input type="text" placeholder="CEP" className="input-custom col-span-4"/>
-                                <input type="text" placeholder="Rua" className="input-custom col-span-12"/>
+                                <input
+                                type="text"
+                                placeholder="CEP"
+                                className="input-custom col-span-4"
+                                value={cep}
+                                onChange={(e) => setCep(e.target.value)}
+                                />
+                                <input
+                                type="text"
+                                placeholder="Rua"
+                                className="input-custom col-span-12"
+                                value={street}
+                                onChange={(e) => setRua(e.target.value)}
+                                />
                             </div>
                             <div className="grid grid-cols-12 gap-3">
-                                <input type="text" placeholder="Número" className="input-custom col-span-4"/>
-                                <input type="text" placeholder="Complemento" className="input-custom col-span-8"/>
+                                <input
+                                type="text"
+                                placeholder="Número"
+                                className="input-custom col-span-4"
+                                value={number}
+                                onChange={(e) => setNumero(e.target.value)}
+                                />
+                                <input
+                                type="text"
+                                placeholder="Complemento"
+                                className="input-custom col-span-8"
+                                value={complement}
+                                onChange={(e) => setComplemento(e.target.value)}
+                                />
                             </div>
-                            <div className="grid grid-cols-12 gap-3">
-                                <input type="text" placeholder="Bairro" className="input-custom col-span-4"/>
-                                <input type="text" placeholder="Cidade" className="input-custom col-span-6"/>
-                                <input type="text" placeholder="UF" className="input-custom col-span-2"/>
-                            </div>
+                            <button type="submit">Enviar Endereço</button>
                         </form>
                     </div>
                     <div className='bg-base-card p-10 rounded'>
@@ -58,41 +171,66 @@ export function Bag(){
                             </div>
                         </div>
                         <div className='flex gap-3 justify-between'>
-                            <button className='button-custom'>
+                            <button
+                                className={`button-custom ${selectedButton === 'creditCard' ? 'selected' : ''}`}
+                                onClick={() => handleButtonClick('creditCard')}
+                            >
                                 <CreditCard size={22} className="text-purple" />
                                 <span>CARTÃO DE CRÉDITO</span>
                             </button>
-                            <button className='button-custom'>
+                            <button
+                                className={`button-custom ${selectedButton === 'debitCard' ? 'selected' : ''}`}
+                                onClick={() => handleButtonClick('debitCard')}
+                            >
                                 <Bank size={22} className="text-purple"/>
                                 CARTÃO DE DÉBITO
                             </button>
-                            <button className='button-custom'>
-                                <Money size={22} className="text-purple"/>
+                            <button
+                                className={`button-custom ${selectedButton === 'pix' ? 'selected' : ''}`}
+                                onClick={() => handleButtonClick('pix')}
+                            >
+                                {/* <Money size={22} className="text-purple"/> */}
+                                <img src={pixLogo} alt="" />
                                 PIX
+                            </button>
+                            <button
+                                className={`button-custom ${selectedButton === 'dinheiro' ? 'selected' : ''}`}
+                                onClick={() => handleButtonClick('dinheiro')}
+                            >
+                                <Money size={22} className="text-purple"/>
+                                DINHEIRO
                             </button>
                         </div>
                     </div>
                 </div>
                 <div className="bg-base-card p-10 col-span-5 flex flex-col rounded-tr-[44px] rounded-bl-[44px] flex flex-col justify-between">
-                    {productsOnBag.map(product => {
-                        return (
-                            <div key={product.id} className='flex justify-between items-start border-b-[1px] border-base-button pb-6 mb-6'>
-                                <div className='flex items-center'>
-                                    <img src={product.image} alt="" className='w-16 h-16 mr-5'/>
-                                    <div>
-                                        <h2 className='mb-2'>{product.name}</h2>
-                                        <div className='flex gap-2'>
-                                            <input value={1} type="number" className='h-8 text-center w-14 bg-base-button' min="0"/>
-                                            <button className='button-custom text-purple bg-base-button hover:bg-base-hover p-2'>
-                                                <Trash size={16} />
-                                            </button>
+                    <div>
+                        {cartItems.map(product => {
+                            const quantity = quantities[product.id] || 1;
+                            return (
+                                <div key={product.id} className='flex justify-between items-start border-b-[1px] border-base-button pb-6 mb-6'>
+                                    <div className='flex items-center'>
+                                        <div>
+                                            <h2 className='font-bold text-xl mb-2'>{product.name}</h2>
+                                            <div className='flex gap-2'>
+                                                <input
+                                                    value={quantity}
+                                                    type="number"
+                                                    className='h-8 text-center w-14 bg-base-button rounded'
+                                                    min="0"
+                                                    onChange={(e) => handleItemAmount(product.id, parseInt(e.target.value, 10))}
+                                                />
+                                                <button className='button-custom text-purple bg-base-button hover:bg-base-hover p-2' onClick={() => deleteCartItem(product.id)}>
+                                                    <Trash size={16} />
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
+                                    <p className='font-bold text-base text-base-text'>R$ {(product.price * quantity).toFixed(2)}</p>
                                 </div>
-                                <p className='font-bold text-base text-base-text'>R$ {product.price.toFixed(2)}</p>
-                            </div>
-                        )
-                    })}
+                            )
+                        })}
+                    </div>
                     <div>
                         <div>
                             <div className='flex justify-between mb-3'>
@@ -114,6 +252,20 @@ export function Bag(){
                     </div>
                 </div>
             </div>
+            <Modal open={open} onClose={() => setOpen(false)}>
+                <div className='w-72'>
+                    <div className='flex justify-between items-center mb-3'>
+                        <h1 className="font-bold text-2xl">Precisa de troco?</h1>
+                        <X className='hover:cursor-pointer' size={22} onClick={() => setOpen(false)}/>
+                    </div>
+                    <div>
+                        <input type="text" placeholder='Informe seu troco' className="input-custom w-full"/>
+                    </div>
+                    <button className='flex gap-1 bg-yellow hover:bg-yellow-dark text-white text-center block px-3 py-2 rounded mt-3' type="submit" onClick={() => setOpen(false)}>
+                        Confirmar
+                    </button>
+                </div>
+            </Modal>
         </div>
     )
 }

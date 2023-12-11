@@ -1,7 +1,17 @@
 import { CurrencyDollar, MapPin, Timer } from '@phosphor-icons/react';
 import deliveryStatus from '../../assets/delivery-status.png';
+import { useEffect, useState } from 'react';
 
 export function StatusPedido(){
+    const [address, setAddress] = useState({})
+    useEffect(() => {
+        const fetchAddress = async () => {
+            const response = await fetch('http://localhost:5000/api/address')
+            const data = await response.json()
+            setAddress(data)
+        }    
+        fetchAddress()
+    }, [])
     return (
         <div className='mt-10'>
             <div>
@@ -15,8 +25,8 @@ export function StatusPedido(){
                             <MapPin size={16}  weight='fill'/>
                         </div>
                         <div className='leading-tight'>
-                            <h1>Entrega em <b>Avenida das joaninhas, 18</b></h1>
-                            <h2>Centro - Xique-Xique, BA</h2>
+                            <h1>Entrega em <b>{address.street}, {address.number}</b></h1>
+                            <h2>{address.complement} - Xique-Xique, BA</h2>
                         </div>
                     </div>
                     <div className='flex items-center gap-2'>
